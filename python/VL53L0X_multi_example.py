@@ -25,6 +25,7 @@
 import time
 import VL53L0X
 import RPi.GPIO as GPIO
+import requests
 
 # GPIO for Sensor 1 shutdown pin
 sensor1_shutdown = 20
@@ -82,6 +83,10 @@ isValid1 = False
 minDist2 = MAX_DIST + 1
 minTime2 = 0
 isValid2 = False
+
+
+URL = "http://172.16.9.18:3000/sensor/1"
+PARAMS = { "DATA": ""}
 
 while True:
 	distance1 = tof.get_distance()
@@ -144,7 +149,17 @@ while True:
 	if (isValid1 and isValid2):
 		if (minTime1 < minTime2):
 			print ("\nForward\n")
+			PARAMS["DATA"] = "FORWARD"
+			try:
+				requests.post(url=URL, data=PARAMS)
+			except:
+				pass
 		else:
+			PARAMS["DATA"] = "REVERSE"
+			try:
+				requests.post( url=URL, data=PARAMS)
+			except:
+				pass
 			print ("\nBackward\n")
 		minDist1 = MAX_DIST + 1
 		minTime1 = 0
