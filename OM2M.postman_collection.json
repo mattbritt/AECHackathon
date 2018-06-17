@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "40b320fe-2df6-4004-90e9-f2b1ef36c88b",
+		"name": "OM2M",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a sensor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-M2M-Origin",
+						"value": "admin:admin"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;ty=2"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"m2m:ae\": \r\n   {\r\n     \"api\": \"app-sensor\",\r\n     \"rr\": \"false\",\r\n     \"lbl\": [\"Type/sensor\", \"Category/distance\", \"Location/hackathon\"],\r\n     \"rn\": \"VL53L0X\"\r\n   }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/~/in-cse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"~",
+						"in-cse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sensor List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a data container for a sensor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-M2M-Origin",
+						"value": "admin:admin"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;ty=3"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"m2m:cnt\": {\n\t\t\"rn\": \"DATA\"\n\t}\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/~/in-cse/in-name/VL53L0X",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"~",
+						"in-cse",
+						"in-name",
+						"VL53L0X"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create data content instance",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-M2M-Origin",
+						"value": "admin:admin"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;ty=3"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"m2m:cnt\": {\n\t\t\"rn\": \"DATA\"\n\t}\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/~/in-cse/in-name/VL53L0X",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"~",
+						"in-cse",
+						"in-name",
+						"VL53L0X"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscribe",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-M2M-Origin",
+						"value": "admin:admin"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json;ty=23"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"m2m:sub\": {\n      \"rn\": \"subscribe_test\",\n      \"nu\": [\"http://locaohost:1400\"],\n      \"nct\": 2,\n      \"enc\": {\n      \t\"net\": 3\n      }\n   }\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/~/in-cse/in-name/VL53L0X",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"~",
+						"in-cse",
+						"in-name",
+						"VL53L0X"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sensor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Sensor Data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		}
+	]
+}
