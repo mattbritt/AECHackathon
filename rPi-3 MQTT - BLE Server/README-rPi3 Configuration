@@ -1,0 +1,118 @@
+This file summaries configuration actions for the rPi3 used as an MQTT to BLE repeater,
+which is designated for use as an always on
+- node.js (v8.11.2)
+- node-red (v0.18.7)
+- EspruinoHub
+- MQTT broker (Mosquitto, via npm)
+
+It was started per this tutorial
+http://www.espruino.com/Puck.js+Node-RED
+
+including this image building
+https://github.com/espruino/EspruinoHub
+
+
+Specifically:
+Installation of everything (EspruinoHub, Node-RED, Web IDE)
+
+These instructions install up to date Node.js and Node-RED - however it can take a while! If you just want EspruinoHub and the IDE, see the next item.
+
+# Install a modern version of nodejs and nodered
+sudo apt-get install build-essential python-rpi.gpio
+bash <(curl -sL https://raw.githubusercontent.com/node-red/raspbian-deb-package/master/resources/update-nodejs-and-nodered)
+# Get dependencies
+sudo apt-get install mosquitto mosquitto-clients bluetooth bluez libbluetooth-dev libudev-dev
+# Auto start Node-RED
+sudo systemctl enable nodered.service
+# Start nodered manually this one time (this creates ~/.node-red)
+sudo systemctl start nodered.service
+# Install the Node-RED UI
+cd ~/.node-red && npm install node-red-contrib-ui
+# Now get EspruinoHub
+cd ~/
+git clone https://github.com/espruino/EspruinoHub
+# Install EspruinoHub's required Node libraries
+cd EspruinoHub
+npm install
+# Optional: Install the Espruino Web IDE to allow the IDE to be used from the server
+git clone https://github.com/espruino/EspruinoWebIDE
+(cd EspruinoWebIDE && git clone https://github.com/espruino/EspruinoTools)
+# Give Node.js access to Bluetooth
+sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
+You can now type ./start.sh to run EspruinoHub, but it's worth checking out the Auto Start section to see how to get it to run at boot.
+
+
+And then this, to enable auto-start of EspruinoHub
+
+Auto Start
+
+=> note, tried the next steps, which didn't work as expected, then rolled back as noted later in this file...
+
+There are a 2 main ways to run EspruinoHub on the Raspberry Pi.
+
+Headless Startup
+
+This is the normal way of running services - to configure them as a system start-up job using systemd:**
+
+    sudo cp systemd-EspruinoHub.service /etc/systemd/system/EspruinoHub.service
+and edit it as necessary to match your installation directory and user configuration. Then, to start it for testing:
+
+    sudo systemctl start EspruinoHub.service && sudo journalctl -f -u EspruinoHub
+If it works, Ctrl-C to break out and enable it to start on login:
+
+    sudo systemctl enable EspruinoHub.service
+
+=> note: something wasn't working correctly with those Auto Start instructions - a flow that worked before reboot did not work afterwards.
+=> I disabled the systemctl settings, rebooted,
+===> then got things to work consistently between reboots by:
+===>> reboot
+===>> start node-red (ie. using menu-bar icon)
+===>> start /EspruinoHub/start.sh
+
+
+Then, I noticed that the node-red-contrib-ui library had been deprecated or dropped,
+=> and is now replaced by a better & maintained node-red-dashboard
+=> found this description of how to upgrade:
+https://randomnerdtutorials.com/upgrade-from-node-red-contrib-ui-to-node-red-dashboard/
+
+ie.
+Migration from Node-RED-Contrib-UI
+-> noted: Node-RED-Contrib-UI MUST be uninstalled before installing node-red-dashboard.
+
+ie. followed these steps
+0. made a copy of the current (and working) flow "Puck - MQTT - Basic UI"
+1. rebooted to start clean (ie. w/o node-red or EspruinoHub running)
+2. cd ~/.node-red $ sudo npm uninstall node-red-contrib-ui
+3. sudo npm install node-red-dashboard
+3.5 then noted (npm) Update available (5.6.0 -> 6.1.0),
+3.6 ran  npm i -g npm  (-> got errorrs)
+3.7 ran sudo npm i -g npm 
+3.8 npm --version => 6.1.0
+4. sudo reboot
+
+behaved pretty well for a couple days. (although, every now and then, need to reboot,
+to fix issue where node-red flow "Puck - MQTT - Dashboard UI" is able to scan & report,
+but loses the ability to send commands
+ie. this times out after connecting (ie. it never writes the bytes).
+not sure if that's an EspruinoHub or node-red / MQTT or driver issue, but reboot is
+only certain way to fix it.
+
+wondering if the rPi screen saver has something to do with it, e.g.
+trying to send the command too quickly after waking up from screen saver,
+hence load this
+https://www.raspberrypi.org/documentation/configuration/screensaver.md
+sudo apt-get install xscreensaver
+
+
+installed emacs
+https://www.raspberrypi.org/documentation/linux/usage/text-editors.md
+sudo apt-get install emacs
+
+installed what seems to be a decent version of firefox
+	https://raspberrypi.stackexchange.com/questions/75463/firefox-57-on-a-raspberry-pi
+sudo apt-get update
+sudo apt-get install firefox-esr
+
+sudo npm i forever -g    => from AEC Hackathon, restarts node if crashes
+launch by e.g. forever start index.js
+

@@ -1,0 +1,6 @@
+This file summaries configuration actions for the node-red MQTT server running on a T420
+which is designated for use as an always on
+- node.js (v8.11.2)
+- node-red (v0.18.7)
+
+also using node-red-dashboard

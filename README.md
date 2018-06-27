@@ -1,3 +1,16 @@
+# Team Futsie - Foot Traffic Flow Sensor - Project for AEC Hackathon
+
+This repo covers the end to end project built & presented in the AEC Hackathon 5.1 Dallas, 15~18 June.
+
+You can find the project overview in TeamPresentation.pptx
+
+Key elements include
+- Sensor system, based on the qty 2 of the VL53L0X time of flight laser rangefinder chip and Raspberry Pi 3
+- a node-red server running on a laptop (see folder "MQTT -n- Dashboard Server")
+- a node-red server running on another Raspberry Pi 3 (see folder "rPi-3 MQTT - BLE Server")
+- a Puck.js BLE device, used as a remote indicator light (see folder "Puck.js - indicator light", which includes a brief summary of the messaging flow from sensor to BLE light)
+
+Additional files describe hackathon instructions from sponsor KnowThings.io, which is building a service that can observe arbitrary iOT sensor traffic, automagically build a model of the sensors reports, including real world variation in time and values, and then enable building arbitrary numbers of virtual instances with natural variation from that model - suitable for useful tasks such as iOT system load simulation. Although we did finally manage to capture data from the foot traffic flow sensor, and create a virtual instance, it was not working properly, and hence those files are not included in this repo.
 
 # VL53L0X Python interface on Raspberry Pi
 
