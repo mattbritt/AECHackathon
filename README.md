@@ -1,6 +1,6 @@
 # Team Futsie - Foot Traffic Flow Sensor - Project for AEC Hackathon
 
-This repo covers the end to end project built & presented in the AEC Hackathon 5.1 Dallas, 15~18 June.
+This repo covers the end to end project built & presented in the AEC Hackathon 5.1 Dallas, 15~18 June 2018.
 
 You can find the project overview in TeamPresentation.pptx
 
